@@ -1,3 +1,23 @@
-const App = () => <span>Hello world</span>
+import { useCallback, useState } from 'react'
+import { Modal } from './components'
+
+const App = () => {
+  const [show, setShow] = useState<boolean>(false)
+
+  const handleClose = useCallback(() => {
+    setShow(false)
+  }, [])
+
+  const handleClick = useCallback(() => {
+    setShow(true)
+  }, [])
+
+  return (
+    <>
+      <button onClick={handleClick}>Open modal</button>
+      <Modal show={show} onClose={handleClose} />
+    </>
+  )
+}
 
 export default App
