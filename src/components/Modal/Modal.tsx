@@ -1,3 +1,4 @@
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -36,27 +37,45 @@ const Container = styled.div`
 `
 
 type Props = {
-  show: boolean
   onClose: () => void
 }
 
-const Modal = ({ show, onClose }: Props) => {
+const Modal = ({ onClose }: Props) => {
+  const [size, setSize] = useState<number>(10)
+
+  const fetchUsers = useCallback(async () => {
+    const response = await fetch(`https://random-data-api.com/api/users/random_user?size=${size}`)
+    const jsonData = await response.json()
+    console.log(jsonData)
+  }, [size])
+
+  useEffect(() => {
+    fetchUsers()
+  }, [])
+
+  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target
+    setSize(parseInt(value))
+  }, [])
+
+  const handleClick = useCallback(() => {
+    fetchUsers()
+  }, [fetchUsers])
+
   return (
-    <>
-      {show && (
-        <Container>
-          <div className='header'>
-            <h1 className='title'>Fetch Users</h1>
-          </div>
-          <div className='body'>
-            <span>Content goes here</span>
-          </div>
-          <div className='footer'>
-            <button onClick={onClose}>Close</button>
-          </div>
-        </Container>
-      )}
-    </>
+    <Container>
+      <div className='header'>
+        <h2 className='title'>Fetch Users</h2>
+      </div>
+      <div className='body'>
+        <input type='number' value={size} onChange={handleChange} />
+        <button onClick={handleClick}>Next</button>
+        <span>Content goes here</span>
+      </div>
+      <div className='footer'>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </Container>
   )
 }
 
