@@ -44,7 +44,14 @@ const Container = styled.div`
     height: 80%;
     width: 100%;
   }
+  .error {
+    color: red;
+    font-size: 13px;
+    margin-top: 6px;
+  }
 `
+
+const MAX_USERS = 20
 
 type Props = {
   show: boolean
@@ -56,6 +63,7 @@ const Modal = ({ show, onClose }: Props) => {
   const [users, setUsers] = useState<unknown[]>()
   const [size, setSize] = useState<number>(10)
   const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | undefined>()
 
   const currentUser = users?.[selectedIndex]
 
@@ -70,15 +78,22 @@ const Modal = ({ show, onClose }: Props) => {
     fetchUsers()
   }, [])
 
-  const handleChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     setSize(parseInt(value))
-  }, [])
+  }
 
-  const handleClick = useCallback(() => {
+  const handleButtonClick = useCallback(() => {
+    if (size > MAX_USERS) {
+      setError(
+        'Error: Max number of users exceeded. Please insert a valid number of users to fetch'
+      )
+      return
+    }
+    error && setError('')
     fetchUsers()
     setSelectedIndex(0)
-  }, [fetchUsers])
+  }, [error, fetchUsers, size])
 
   const handleToggleButtonClick = (selectedIndex: number) => {
     setSelectedIndex(selectedIndex)
@@ -104,8 +119,9 @@ const Modal = ({ show, onClose }: Props) => {
               </>
             )}
             <h4>Refetch users</h4>
-            <input type='number' value={size} onChange={handleChange} />
-            <button onClick={handleClick}>Next</button>
+            <input type='number' value={size} onChange={handleInputChange} />
+            <button onClick={handleButtonClick}>Next</button>
+            {error && <div className='error'>{error}</div>}
           </div>
           <div className='footer'>
             <button onClick={onClose}>Close</button>
