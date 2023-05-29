@@ -1,4 +1,5 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { ToggleBar } from '../../components'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -41,12 +42,15 @@ type Props = {
 }
 
 const Modal = ({ onClose }: Props) => {
+  const [users, setUsers] = useState<unknown[]>()
   const [size, setSize] = useState<number>(10)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const fetchUsers = useCallback(async () => {
-    const response = await fetch(`https://random-data-api.com/api/users/random_user?size=${size}`)
-    const jsonData = await response.json()
-    console.log(jsonData)
+    setLoading(true)
+    await fetch(`https://random-data-api.com/api/users/random_user?size=${size}`)
+      .then(async (response) => setUsers(await response.json()))
+      .finally(() => setLoading(false))
   }, [size])
 
   useEffect(() => {
@@ -68,6 +72,8 @@ const Modal = ({ onClose }: Props) => {
         <h2 className='title'>Fetch Users</h2>
       </div>
       <div className='body'>
+        {loading && <div>loading...</div>}
+        {!loading && <ToggleBar users={users} />}
         <input type='number' value={size} onChange={handleChange} />
         <button onClick={handleClick}>Next</button>
         <span>Content goes here</span>
