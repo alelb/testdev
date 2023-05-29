@@ -41,13 +41,14 @@ const ToggleBar = ({ users, currentIndex, className, onToggleButtonClick }: Prop
   const [chunks, setChunks] = useState<unknown[][]>()
 
   useEffect(() => {
-    const divider = calculateDivider(users?.length)
-    setDivider(divider)
-    setChunks(sliceIntoChunks(users, divider))
+    if (users?.length) {
+      const divider = calculateDivider(users.length)
+      setDivider(divider)
+      setChunks(sliceIntoChunks(users, divider))
+    }
   }, [users])
 
   const calculateDivider = (size: number) => {
-    if (size === undefined) return 0
     const remainders = divisors.map((d) => size % d)
     const firstZeroRemainderIndex = remainders.findIndex((r) => r === 0)
     const maxRemainder = Math.max(...remainders)
