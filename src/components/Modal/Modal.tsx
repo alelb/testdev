@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { ToggleBar } from '../../components'
+import { ProfileCard, ToggleBar } from '../../components'
 import styled from 'styled-components'
 
 const Container = styled.div`
@@ -42,9 +42,12 @@ type Props = {
 }
 
 const Modal = ({ onClose }: Props) => {
+  const [selectedIndex, setSelectedIndex] = useState<number>(0)
   const [users, setUsers] = useState<unknown[]>()
   const [size, setSize] = useState<number>(10)
   const [loading, setLoading] = useState<boolean>(false)
+
+  const currentUser = users?.[selectedIndex]
 
   const fetchUsers = useCallback(async () => {
     setLoading(true)
@@ -76,7 +79,7 @@ const Modal = ({ onClose }: Props) => {
         {!loading && <ToggleBar users={users} />}
         <input type='number' value={size} onChange={handleChange} />
         <button onClick={handleClick}>Next</button>
-        <span>Content goes here</span>
+        {currentUser && <ProfileCard user={currentUser} />}
       </div>
       <div className='footer'>
         <button onClick={onClose}>Close</button>
