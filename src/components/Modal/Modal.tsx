@@ -30,7 +30,7 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border: 2px solid green;
-    overflow-y: hidden:
+    overflow-y: hidden:    
   }
   .footer {
     margin-top: 12px;
@@ -48,6 +48,9 @@ const Container = styled.div`
     color: red;
     font-size: 13px;
     margin-top: 6px;
+  }
+  .next-button {
+    margin-left: 6px;
   }
 `
 
@@ -118,9 +121,11 @@ const Modal = ({ show, onClose }: Props) => {
                 {currentUser && <ProfileCard user={currentUser} />}
               </>
             )}
-            <h4>Refetch users</h4>
+            <h4>Next users</h4>
             <input type='number' value={size} onChange={handleInputChange} />
-            <button onClick={handleButtonClick}>Next</button>
+            <button className='next-button' onClick={handleButtonClick}>
+              Next
+            </button>
             {error && <div className='error'>{error}</div>}
           </div>
           <div className='footer'>
