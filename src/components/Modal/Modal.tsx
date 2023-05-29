@@ -67,7 +67,12 @@ const Modal = ({ onClose }: Props) => {
 
   const handleClick = useCallback(() => {
     fetchUsers()
+    setSelectedIndex(0)
   }, [fetchUsers])
+
+  const handleToggleButtonClick = (selectedIndex: number) => {
+    setSelectedIndex(selectedIndex)
+  }
 
   return (
     <Container>
@@ -76,7 +81,13 @@ const Modal = ({ onClose }: Props) => {
       </div>
       <div className='body'>
         {loading && <div>loading...</div>}
-        {!loading && <ToggleBar users={users} />}
+        {!loading && (
+          <ToggleBar
+            currentIndex={selectedIndex}
+            onToggleButtonClick={handleToggleButtonClick}
+            users={users}
+          />
+        )}
         <input type='number' value={size} onChange={handleChange} />
         <button onClick={handleClick}>Next</button>
         {currentUser && <ProfileCard user={currentUser} />}
