@@ -29,11 +29,19 @@ const Container = styled.div`
     justify-content: center;
     align-items: center;
     border: 2px solid green;
+    overflow-y: hidden:
   }
   .footer {
     margin-top: 12px;
     flex-flow: row;
     align-items: flex-end;
+  }
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
+    width: 100%;
   }
 `
 
@@ -80,17 +88,20 @@ const Modal = ({ onClose }: Props) => {
         <h2 className='title'>Fetch Users</h2>
       </div>
       <div className='body'>
-        {loading && <div>loading...</div>}
+        {loading && <div className='loading'>loading...</div>}
         {!loading && (
-          <ToggleBar
-            currentIndex={selectedIndex}
-            onToggleButtonClick={handleToggleButtonClick}
-            users={users}
-          />
+          <>
+            <ToggleBar
+              currentIndex={selectedIndex}
+              onToggleButtonClick={handleToggleButtonClick}
+              users={users}
+            />
+            {currentUser && <ProfileCard user={currentUser} />}
+          </>
         )}
+        <h4>Refetch users</h4>
         <input type='number' value={size} onChange={handleChange} />
         <button onClick={handleClick}>Next</button>
-        {currentUser && <ProfileCard user={currentUser} />}
       </div>
       <div className='footer'>
         <button onClick={onClose}>Close</button>

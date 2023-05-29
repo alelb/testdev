@@ -33,9 +33,10 @@ type Props = {
   users?: unknown[]
   currentIndex: number
   onToggleButtonClick: (currentIndex: number) => void
+  className?: string
 }
 
-const ToggleBar = ({ users, currentIndex, onToggleButtonClick }: Props) => {
+const ToggleBar = ({ users, currentIndex, className, onToggleButtonClick }: Props) => {
   const [divider, setDivider] = useState<number>()
   const [chunks, setChunks] = useState<unknown[][]>()
 
@@ -83,7 +84,7 @@ const ToggleBar = ({ users, currentIndex, onToggleButtonClick }: Props) => {
   )
 
   return (
-    <>
+    <div className={className ?? ''}>
       {chunks?.map((chunk, i) => (
         <Bar key={i}>
           {chunk?.map((user, j) => (
@@ -97,7 +98,7 @@ const ToggleBar = ({ users, currentIndex, onToggleButtonClick }: Props) => {
           ))}
         </Bar>
       ))}
-    </>
+    </div>
   )
 }
 
