@@ -20,16 +20,15 @@ const Container = styled.div`
   .header,
   .body,
   .footer {
-    padding: 24px;
+    padding: 18px;
   }
 
   .header {
   }
   .body {
-    flex-grow: 1;
+    flex: 1 1 auto;
     justify-content: center;
     align-items: center;
-    border: 2px solid green;
     overflow-y: hidden:    
   }
   .footer {
@@ -48,9 +47,19 @@ const Container = styled.div`
     color: red;
     font-size: 13px;
     margin-top: 6px;
+  } 
+  .users-section {
+    height: 80%;
   }
-  .next-button {
-    margin-left: 6px;
+  .control-section {
+    display: flex;
+    align-items: center;
+    height: 20%;
+  }
+  .control-input {
+    display: flex;
+    flex-flow: row wrap;
+    gap: 6px;
   }
 `
 
@@ -112,21 +121,23 @@ const Modal = ({ show, onClose }: Props) => {
           <div className='body'>
             {loading && <div className='loading'>loading...</div>}
             {!loading && (
-              <>
+              <div className='users-section'>
                 <ToggleBar
                   currentIndex={selectedIndex}
                   onToggleButtonClick={handleToggleButtonClick}
                   users={users}
                 />
                 {currentUser && <ProfileCard user={currentUser} />}
-              </>
+              </div>
             )}
-            <h4>Next users</h4>
-            <input type='number' value={size} onChange={handleInputChange} />
-            <button className='next-button' onClick={handleButtonClick}>
-              Next
-            </button>
-            {error && <div className='error'>{error}</div>}
+            <div className='control-section'>
+              <div className='control-input'>
+                <label htmlFor='size'>Next users</label>
+                <input id='size' type='number' value={size} onChange={handleInputChange} />
+                <button onClick={handleButtonClick}>Next</button>
+                {error && <div className='error'>{error}</div>}
+              </div>
+            </div>
           </div>
           <div className='footer'>
             <button onClick={onClose}>Close</button>
