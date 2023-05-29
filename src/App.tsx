@@ -15,7 +15,7 @@ const App = () => {
   return (
     <>
       <button onClick={handleClick}>Open modal</button>
-      <>{show && <Modal onClose={handleClose} />}</>
+      <Modal show={show} onClose={handleClose} />
     </>
   )
 }

@@ -1,6 +1,7 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { ProfileCard, ToggleBar } from '../../components'
 import styled from 'styled-components'
+import { createPortal } from 'react-dom'
 
 const Container = styled.div`
   display: flex;
@@ -46,10 +47,11 @@ const Container = styled.div`
 `
 
 type Props = {
+  show: boolean
   onClose: () => void
 }
 
-const Modal = ({ onClose }: Props) => {
+const Modal = ({ show, onClose }: Props) => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
   const [users, setUsers] = useState<unknown[]>()
   const [size, setSize] = useState<number>(10)
@@ -82,31 +84,36 @@ const Modal = ({ onClose }: Props) => {
     setSelectedIndex(selectedIndex)
   }
 
-  return (
-    <Container>
-      <div className='header'>
-        <h2 className='title'>Fetch Users</h2>
-      </div>
-      <div className='body'>
-        {loading && <div className='loading'>loading...</div>}
-        {!loading && (
-          <>
-            <ToggleBar
-              currentIndex={selectedIndex}
-              onToggleButtonClick={handleToggleButtonClick}
-              users={users}
-            />
-            {currentUser && <ProfileCard user={currentUser} />}
-          </>
-        )}
-        <h4>Refetch users</h4>
-        <input type='number' value={size} onChange={handleChange} />
-        <button onClick={handleClick}>Next</button>
-      </div>
-      <div className='footer'>
-        <button onClick={onClose}>Close</button>
-      </div>
-    </Container>
+  return createPortal(
+    <>
+      {show && (
+        <Container>
+          <div className='header'>
+            <h2 className='title'>Fetch Users</h2>
+          </div>
+          <div className='body'>
+            {loading && <div className='loading'>loading...</div>}
+            {!loading && (
+              <>
+                <ToggleBar
+                  currentIndex={selectedIndex}
+                  onToggleButtonClick={handleToggleButtonClick}
+                  users={users}
+                />
+                {currentUser && <ProfileCard user={currentUser} />}
+              </>
+            )}
+            <h4>Refetch users</h4>
+            <input type='number' value={size} onChange={handleChange} />
+            <button onClick={handleClick}>Next</button>
+          </div>
+          <div className='footer'>
+            <button onClick={onClose}>Close</button>
+          </div>
+        </Container>
+      )}
+    </>,
+    document.getElementById('modal')
   )
 }
 
