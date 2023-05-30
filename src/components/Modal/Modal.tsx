@@ -90,8 +90,20 @@ const Modal = ({ show, onClose }: Props) => {
 
   const fetchUsers = useCallback(async () => {
     setLoading(true)
-    await fetch(`https://random-data-api.com/api/users/random_user?size=${size}`)
-      .then(async (response) => setUsers(await response.json()))
+    fetch(`https://random-data-api.com/api/users/random_user?size=${size}`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json()
+        } else {
+          return Promise.reject(response)
+        }
+      })
+      .then((users) => {
+        setUsers(users)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
       .finally(() => setLoading(false))
   }, [size])
 
