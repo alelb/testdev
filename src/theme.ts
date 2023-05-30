@@ -1,6 +1,5 @@
-const theme = {
+const theme: { palette: Record<string, string> } = {
   palette: {
-    white: '#C5F4D6',
     primary: '#0449D1',
     secondary: '#2690D8',
     standard: '#4BCADF',
