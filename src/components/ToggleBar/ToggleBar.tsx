@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { User } from 'src/types'
 import styled, { css } from 'styled-components'
 
 const Bar = styled.div`
@@ -34,7 +35,7 @@ const Bar = styled.div`
 const divisors = [5, 4, 3, 2, 1]
 
 type Props = {
-  users?: unknown[]
+  users?: User[]
   currentIndex: number
   onToggleButtonClick: (currentIndex: number) => void
   className?: string
@@ -42,7 +43,7 @@ type Props = {
 
 const ToggleBar = ({ users, currentIndex, className, onToggleButtonClick }: Props) => {
   const [divider, setDivider] = useState<number>()
-  const [chunks, setChunks] = useState<unknown[][]>()
+  const [chunks, setChunks] = useState<User[][]>()
 
   useEffect(() => {
     if (users?.length) {
@@ -98,7 +99,7 @@ const ToggleBar = ({ users, currentIndex, className, onToggleButtonClick }: Prop
               key={j}
               onClick={() => handleClick(i, j)}
             >
-              {user['first_name']}
+              {user.first_name}
             </button>
           ))}
         </Bar>

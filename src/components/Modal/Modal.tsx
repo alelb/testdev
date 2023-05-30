@@ -1,6 +1,7 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { Button, ProfileCard, ToggleBar } from '../../components'
 import styled from 'styled-components'
+import { User } from 'src/types'
 
 const Container = styled.div`
   display: flex;
@@ -81,7 +82,7 @@ type Props = {
 
 const Modal = ({ show, onClose }: Props) => {
   const [selectedIndex, setSelectedIndex] = useState<number>(0)
-  const [users, setUsers] = useState<unknown[]>()
+  const [users, setUsers] = useState<User[]>()
   const [size, setSize] = useState<number>(10)
   const [loading, setLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | undefined>()

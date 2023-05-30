@@ -1,3 +1,4 @@
+import { User } from 'src/types'
 import styled from 'styled-components'
 
 const Card = styled.article`
@@ -20,16 +21,16 @@ const Card = styled.article`
 `
 
 type Props = {
-  user: unknown
+  user: User
   className?: string
 }
 
 const ProfileCard = ({ user, className }: Props) => (
   <Card className={className ?? ''}>
-    <img className='avatar' src={user['avatar']} alt='avatar' />
+    <img className='avatar' src={user.avatar} alt='avatar' />
     <div className='info'>
-      <h4>{`${user['first_name']} ${user['last_name']}`}</h4>
-      <p>{user['email']}</p>
+      <h4>{`${user.first_name} ${user.last_name}`}</h4>
+      <p>{user.email}</p>
     </div>
   </Card>
 )
