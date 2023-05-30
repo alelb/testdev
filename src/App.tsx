@@ -1,22 +1,20 @@
 import { useCallback, useState } from 'react'
-import { Modal } from './components'
+import { Button, Modal } from './components'
+import { ThemeProvider } from 'styled-components'
+import { theme } from './theme'
 
 const App = () => {
   const [show, setShow] = useState<boolean>(false)
 
-  const handleClose = useCallback(() => {
-    setShow(false)
-  }, [])
+  const handleClose = () => setShow(false)
 
-  const handleClick = useCallback(() => {
-    setShow(true)
-  }, [])
+  const handleClick = () => setShow(true)
 
   return (
-    <>
-      <button onClick={handleClick}>Open modal</button>
+    <ThemeProvider theme={theme}>
+      <Button onClick={handleClick}>Open modal</Button>
       <Modal show={show} onClose={handleClose} />
-    </>
+    </ThemeProvider>
   )
 }
 

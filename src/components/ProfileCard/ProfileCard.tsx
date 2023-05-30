@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 
 const Card = styled.article`
-  margin: 12px 0;
   display: flex;
   flex-flow: row wrap;
   flex: 1 1 auto;

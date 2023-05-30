@@ -1,7 +1,6 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { ProfileCard, ToggleBar } from '../../components'
+import { Button, ProfileCard, ToggleBar } from '../../components'
 import styled from 'styled-components'
-import { createPortal } from 'react-dom'
 
 const Container = styled.div`
   display: flex;
@@ -15,7 +14,8 @@ const Container = styled.div`
   bottom: 0;
   right: 0;
   left: 0;
-  background-color: white;
+  background-color: ${({ theme }) => theme.palette.white};
+  color: ${({ theme }) => theme.palette.black};
 
   .header,
   .body,
@@ -32,9 +32,9 @@ const Container = styled.div`
     overflow-y: hidden:    
   }
   .footer {
-    margin-top: 12px;
+    display: flex;
     flex-flow: row;
-    align-items: flex-end;
+    justify-content: flex-end;
   }
   .loading {
     display: flex;
@@ -44,15 +44,17 @@ const Container = styled.div`
     width: 100%;
   }
   .error {
-    color: red;
+    color: ${({ theme }) => theme.palette.error};
     font-size: 13px;
     margin-top: 6px;
   } 
   .users-section {
     height: 80%;
+    .toggle-bar {
+      padding-bottom: 12px;
+    }
   }
   .control-section {
-    display: flex;
     align-items: center;
     height: 20%;
   }
@@ -60,6 +62,13 @@ const Container = styled.div`
     display: flex;
     flex-flow: row wrap;
     gap: 6px;
+    align-items: center;
+
+    #size-input {
+      box-sizing: border-box;
+      height: 32px;
+      outline-color: ${({ theme }) => theme.palette.primary}
+    }
   }
 `
 
@@ -96,10 +105,8 @@ const Modal = ({ show, onClose }: Props) => {
   }
 
   const handleButtonClick = useCallback(() => {
-    if (size > MAX_USERS) {
-      setError(
-        'Error: Max number of users exceeded. Please insert a valid number of users to fetch'
-      )
+    if (size > MAX_USERS || size <= 0) {
+      setError('Error: Insert a valid number')
       return
     }
     error && setError('')
@@ -111,7 +118,7 @@ const Modal = ({ show, onClose }: Props) => {
     setSelectedIndex(selectedIndex)
   }
 
-  return createPortal(
+  return (
     <>
       {show && (
         <Container>
@@ -123,6 +130,7 @@ const Modal = ({ show, onClose }: Props) => {
             {!loading && (
               <div className='users-section'>
                 <ToggleBar
+                  className='toggle-bar'
                   currentIndex={selectedIndex}
                   onToggleButtonClick={handleToggleButtonClick}
                   users={users}
@@ -132,20 +140,21 @@ const Modal = ({ show, onClose }: Props) => {
             )}
             <div className='control-section'>
               <div className='control-input'>
-                <label htmlFor='size'>Next users</label>
-                <input id='size' type='number' value={size} onChange={handleInputChange} />
-                <button onClick={handleButtonClick}>Next</button>
+                <label htmlFor='size-input'>Next users</label>
+                <input id='size-input' type='number' value={size} onChange={handleInputChange} />
+                <Button variation='primary' onClick={handleButtonClick}>
+                  Next
+                </Button>
                 {error && <div className='error'>{error}</div>}
               </div>
             </div>
           </div>
           <div className='footer'>
-            <button onClick={onClose}>Close</button>
+            <Button onClick={onClose}>Close</Button>
           </div>
         </Container>
       )}
-    </>,
-    document.getElementById('modal')
+    </>
   )
 }
 

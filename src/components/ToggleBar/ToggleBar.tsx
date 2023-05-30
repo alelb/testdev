@@ -1,30 +1,34 @@
 import { useCallback, useEffect, useState } from 'react'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 const Bar = styled.div`
-  display: flex;
-  align-content: flex-start;
-  flex-flow: row nowrap;
+  ${({ theme }) => css`
+    display: flex;
+    align-content: flex-start;
+    flex-flow: row nowrap;
 
-  .bar-item {
-    flex: 0 1 20%;
-    height: 32px;
-
-    border: 1px solid #0449d1;
-  }
-  > button {
-    background-color: #4bcadf;
-    color: #0449d1;
-  }
-  > button.selected {
-    background-color: #2690d8;
-  }
-  > button:first-child {
-    border-radius: 5px 0 0 5px;
-  }
-  > button:last-child {
-    border-radius: 0 5px 5px 0;
-  }
+    .bar-item {
+      flex: 0 1 20%;
+      height: 32px;
+      border: 1px solid ${theme.palette.black};
+    }
+    > button {
+      background-color: ${theme.palette.white};
+      color: ${theme.palette.black};
+      outline: ${theme.palette.primary};
+    }
+    > button.selected {
+      background-color: ${theme.palette.secondary};
+    }
+    > button:first-child {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+    > button:last-child {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+  `}
 `
 
 const divisors = [5, 4, 3, 2, 1]
